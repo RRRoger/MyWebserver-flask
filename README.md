@@ -1,15 +1,11 @@
-Flasky
-======
+# My WebServer
 
-This repository contains the source code examples for the second edition of my O'Reilly book [Flask Web Development](http://www.flaskbook.com).
-
-The commits and tags in this repository were carefully created to match the sequence in which concepts are presented in the book. Please read the section titled "How to Work with the Example Code" in the book's preface for instructions.
-
-For Readers of the First Edition of the Book
---------------------------------------------
-
-The code examples for the first edition of the book were moved to a different repository: [https://github.com/miguelgrinberg/flasky-first-edition](https://github.com/miguelgrinberg/flasky-first-edition).
-
+> 网站模板
+> 基于 Python3 + Flask + Mysql + Layui
+>
+> 包含用户管理, 角色管理, 接口日志 等基础内容
+>
+> 支持基本的增删改查操作与权限管理
 
 
 # Technology stack
@@ -42,11 +38,7 @@ flask db migrate
 
 flask db upgrade
 
+# 初始化用户数据
 flask init-tables
 ```
 
-## Show Dir Tree
-
-```bash
-tree -I 'node_modules|cache|layui|__pycache__|ca' -d > ./dir_tree.txt
-```
