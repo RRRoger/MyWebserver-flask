@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block navbar_collapse %}
+    <ul class="nav navbar-nav">
+        <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+    </ul>
+{% endblock %}
+
+{% block page_content %}
+<div class="col-md-4">
+    {{ wtf.quick_form(form) }}
+
+{% endblock %}

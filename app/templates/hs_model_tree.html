@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% block title %}Hesai Model{% endblock %}
+
+{% block card %}
+<div class="layui-card-header">
+  <h2>Hesai Model</h2>
+  <a class="layui-btn layui-btn-lg" style="float:right;margin-top:-40px;margin-right:40px;"
+     href="{{ url_for('main.hs_model_form', record_id=0) }}">
+    <i class="layui-icon">&#xe608;</i>新建 - New
+  </a>
+</div>
+{% endblock %}
+
+{% block body %}
+
+<div style="width: 1500px;margin: auto">
+  <br/>
+  <form class="layui-form" method="post" id="MainForm">
+    {{ form.csrf_token }}
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <div class="layui-row layui-col-space10">
+          <div class="layui-col-md4">
+            {{ form.method(class="layui-input-inline") }}
+          </div>
+          <div class="layui-col-md6">
+            <label class="layui-form-label">查询内容：</label>
+            <div class="layui-input-inline">
+              {{ form.content(class="layui-input",style="width:250px") }}
+            </div>
+          </div>
+          <div class="layui-col-md2">
+            <div class="layui-input-inline">{{ form.submit(class="layui-btn", id="search") }}</div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+
+  <!--  这个标签是页面初始化, 无数据的时候显示的-->
+  <div id="remove">
+    <table lay-even id="result" lay-filter="re">
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <table id="test" lay-filter="test"></table>
+  <div id="laypage"></div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+<script type="text/html" id="operations">
+  <a class="layui-btn layui-btn-lg layui-btn-xs" lay-event="edit">编辑</a>
+  {% if ctx['ALLOW_DELETE'] %}
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  {% endif %}
+</script>
+
+<script>
+
+    layui.use(['form','table','jquery', 'laypage', 'layer'], function(){
+        var form = layui.form;
+        var table = layui.table;
+        var laypage = layui.laypage ,layer = layui.layer;
+        var $ = layui.$;
+        table.init('re', {});
+
+        //定义明细数据
+        var cols = [[
+            {field:'seq', width:'5%', title: '序号',fixed: 'left', templet:table_index},
+            {field:'id', title:'ID', width: '5%'},
+            {field:'name', title:'名称', width: '35%'},
+            {field:'create_date', title:'创建时间', width: '15%'},
+            {field:'update_time', title:'更新时间', width: '15%'},
+            {title:'Operations', width: '15%', align:'center', toolbar: '#operations', fixed: 'right'},
+        ]];
+
+        /* 搜索功能 */
+        function search(pageConf){
+
+            if (!pageConf) {
+                pageConf = {};
+                pageConf.page_size = 15;
+                pageConf.current_page = 1;
+            };
+
+            var form_data = new FormData(document.getElementById("MainForm"));
+
+            form_data.set('page_size', pageConf.page_size);
+            form_data.set('current_page', pageConf.current_page);
+
+
+            $.ajax({
+                url: "{{ url_for('main.find_hs_model') }}",
+                type: "post",
+                data: form_data,
+                processData: false,
+                contentType: false,
+                //fail: function(data){console.log(data)},
+                success: function(result){
+
+                    if(!validate_api_result(result)){return}; // 此处先预处理一下返回值, 需要报错的要报错
+
+                    let render_data = {
+                          elem: 'laypage',  // 标签id, 不需要加 `#`
+                          layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'], //自定义分页布局
+
+                          data: result.data.data,  // 数据集
+                          count: result.data.total, // 总数量
+
+                          prev:"<<",
+                          next:">>",
+
+                          // 页码
+                          limit: pageConf.page_size,
+                          curr: pageConf.current_page,
+
+                          limits: [2, 15, 30, 100],
+
+                          jump: function (obj, first) {
+
+                              if (!first) {
+                                  pageConf.current_page = obj.curr;
+                                  pageConf.page_size = obj.limit;
+                                  search(pageConf);
+                              }
+                          }
+                      };
+
+                    $('#remove').remove();
+
+
+                    // 表格渲染 和分页没有毛关系
+                    table.render({
+                        elem: '#test',  // 标签id
+                        data: result.data.data,  //数据
+                        cols: cols,
+                        height: 700,
+                        limit: pageConf.page_size,
+                    });
+
+                    laypage.render(render_data);
+
+                    if (result.data.length == 0){
+                        layui.layer.msg('未找到任何结果!!!!',{time: 1000});
+                    }
+                }
+            });
+        };
+
+        $(document).ready(function(){
+            // 页面加载后, 加载数据
+            search();
+            $('#search').on('click',function () {
+                search();
+                return false;
+            })
+        });
+
+
+        // 绑定事件
+        // 注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+        table.on("tool(test)", function(obj){
+            var data = obj.data; //获得当前行数据
+            //console.log(data);
+            if(obj.event === 'del'){
+                delete_record(obj, data.id, "{{url_for('main.model_delete_new')}}");
+            }else if(obj.event === 'edit'){
+                window.location.href = "{{ url_for('main.hs_model_form') }}" + data.id;
+            };
+        });
+
+    });
+
+
+</script>
+
+{% endblock %}
+

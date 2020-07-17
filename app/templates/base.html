@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>{% block title %}{% endblock %}</title>
+
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='layui/css/layui.css') }}">
+  <!--加载静态文件-->
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+
+  <!--bootstrap不需要再次加载-->
+  <script type="text/javascript" src="{{ url_for('static', filename='bootstrap_local/js/bootstrap.min.js') }}"></script>
+
+  <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.png') }}" type="image/x-icon">
+  <link rel="icon" href="{{ url_for('static', filename='image/favicon.png') }}" type="image/x-icon">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+
+  <style>favicon.ico
+      .alert{position:relative;padding:.75rem 1.25rem;margin-bottom:1rem;border:1px solid transparent;border-radius:.25rem}
+      .close{position:absolute;top:0;right:0;padding:.75rem 1.25rem;color:inherit}
+      .alert-warning{color:#856404;background-color:#fff3cd;border-color:#ffeeba}
+      .close{float:right;font-size:1.5rem;font-weight:700;line-height:1;color:#000;text-shadow:0 1px 0 #fff;opacity:.5}
+      .close:focus,.close:hover{color:#000;text-decoration:none;opacity:.75}
+      .close:not(:disabled):not(.disabled){cursor:pointer}
+      button.close{padding:0;background-color:transparent;border:0;-webkit-appearance:none}
+      .close{padding:1rem;margin:-1rem -1rem -1rem auto}
+      .alert-dismissible .close{position:absolute;top:0;right:0;padding:.75rem 1.25rem;color:inherit}
+
+  </style>
+  {% block head %}{% endblock %}
+  <style>{% block style %}{% endblock %}</style>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+      <a href="{{ url_for('main.index') }}">
+        <img src="{{ url_for('static', filename='image/favicon.png') }}" height="50" width="50" style="margin-top:5px;margin-left:5px;">
+        <div class="layui-logo" style="margin-left:40px;font-weight:bold;font-size:large">My Server</div>
+      </a>
+      <!-- 头部区域（可配合layui已有的水平导航） -->
+      <ul class="layui-nav layui-layout-right">
+
+        {% if current_user.is_authenticated %}
+        <li class="layui-nav-item">
+          <a href="javascript:;">
+            <img src="{{ current_user.gravatar(size=18) }}">
+            {{ current_user.username }}
+          </a>
+          <dl class="layui-nav-child">
+            <dd><a href="{{ url_for('auth.change_password') }}">Change Password</a></dd>
+            <!--<dd><a href="{{ url_for('auth.change_email_request') }}">Change Email</a></dd>-->
+          </dl>
+        </li>
+        <li class="layui-nav-item"><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+        {% else %}
+        <li class="layui-nav-item"><a href="{{ url_for('auth.login') }}">Log In</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+
+  {% if current_user.is_authenticated %}
+  <div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree" lay-filter="test">
+        {% if True or current_user.is_administrator() %}
+        <li class="layui-nav-item">
+          <a class="" href="javascript:;">Common</a>
+          <dl class="layui-nav-child">
+            <dd><a href="{{ url_for('main.hs_model_tree') }}">Model</a></dd>
+          </dl>
+        </li>
+        {% endif %}
+
+        {% if True or current_user.is_administrator() %}
+        <li class="layui-nav-item">
+          <a href="javascript:;">Settings</a>
+          <dl class="layui-nav-child">
+            <dd><a href="{{ url_for('main.hs_user_tree') }}">用户管理</a></dd>
+            <dd><a href="{{ url_for('main.hs_role_tree') }}">角色管理</a></dd>
+            <dd><a href="{{ url_for('main.hs_api_log_tree') }}">接口日志</a></dd>
+          </dl>
+        </li>
+        {% endif %}
+
+      </ul>
+    </div>
+  </div>
+
+  <div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div class="layui-card layui-row layui-col-space10" style="margin:15px 10px;width:100%;">
+
+      <!--flash message-->
+      {% for message in get_flashed_messages() %}
+      <div class="alert alert-warning" style="width:90%;">
+        {{ message }}
+      </div>
+      {% endfor %}
+
+      {% block card %}
+      {% endblock %}
+
+      <div class="layui-card-body" style="margin-top:20px;">
+
+        {% block body %}
+          <div style="font-size:large;margin:20px;">Welcome to My Server!</div>
+        {% endblock %}
+
+      </div>
+    </div>
+  </div>
+
+  {% block content %}
+  <div class="container">
+  </div>
+  {% endblock %}
+
+  {% endif %}
+
+
+  {% block page_content %}{% endblock %}
+
+
+  <div class="layui-footer" style="font-weight:bold">
+    Copyright 2020 <a href="https://www.riger.city">www.riger.city</a> &nbsp;&nbsp;|&nbsp;&nbsp;版权所有&nbsp;&nbsp;|&nbsp;&nbsp;V1.0.1
+  </div>
+</div>
+<script src="{{ url_for('static', filename='layui/layui.js') }}"></script>
+<script src="{{ url_for('static', filename='js/web_server_base.js') }}"></script>
+<script>
+
+layui.use('element', function(){
+  var element = layui.element;
+  element.init();
+});
+
+
+</script>
+
+{% block script %}
+{% endblock %}
+
+</body>
+
+<!--本地加载静态文件, 加快速速-->
+{{ moment.include_moment(local_js=url_for('static', filename='js/moment-with-locales.min.js')) }}
+{{ moment.lang("zh-CN") }}
+</html>

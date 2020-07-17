@@ -1,0 +1,23 @@
+{% extends "base-user.html" %}
+{% block title %}Login Cyber Security Server. {% endblock %}
+
+{% block body %}
+<div class="login-main">
+    <header class="layui-elip">Log In</header>
+    <form class="layui-form" method="post">
+        {{ form.csrf_token }}
+        <div class="layui-input-inline">
+            {{ form.email(class="layui-input",placeholder="Email") }}
+        </div>
+        <div class="layui-input-inline">
+            {{ form.password(class="layui-input",placeholder="Password") }}
+        </div>
+        <div class="layui-input-inline login-btn">
+            {{ form.submit(class="layui-btn") }}
+        </div>
+        <hr/>
+        <p><a href="javascript:;" class="fr">Forgot your password?<br/>Please contact Administrator</a></p>
+    </form>
+
+</div>
+{% endblock %}

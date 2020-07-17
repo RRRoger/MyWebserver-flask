@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% block title %}Api Log{% endblock %}
+
+{% block card %}
+<div class="layui-card-header">
+  <h2>Api Log</h2>
+  <a class="layui-btn layui-btn-lg" style="float:right;margin-top:-40px;margin-right:40px;"
+     href="{{ url_for('main.hs_api_log_tree') }}">
+    <i class="layui-icon">&#xe668;</i>查看列表
+  </a>
+</div>
+{% endblock %}
+
+
+{% block body %}
+<form class="layui-form" method="post" id="MainForm">
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">ID</label>
+    <div class="layui-input-block">
+      {{ form.record_id(class="layui-input layui-disabled", style="width:40%", readonly=1, disable=1, value=record.id)
+      }}
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">URL</label>
+    <div class="layui-input-block">
+      {{ form.url(class="layui-input layui-disabled", style="width:40%;", value=record.url) }}
+    </div>
+  </div>remote_addr
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">Remote Address</label>
+    <div class="layui-input-block">
+      {{ form.remote_addr(class="layui-input layui-disabled", style="width:40%;", value=record.remote_addr) }}
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">Is Success</label>
+    <div class="layui-input-block">
+      <input class="layui-disabled" type="checkbox" name="switch" lay-skin="switch" name="is_success" {{ 'checked' if record.is_success else '' }}>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">Form Body</label>
+    <div class="layui-input-block">
+      <textarea name="form_body" class="layui-textarea layui-disabled" style="width:40%;height:120px;">{{ record.form_body }}</textarea>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">Data Body</label>
+    <div class="layui-input-block">
+      <textarea name="data_body" class="layui-textarea layui-disabled" style="width:40%;height:120px;">{{ record.data_body }}</textarea>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">File Body</label>
+    <div class="layui-input-block">
+      <textarea name="file_body" class="layui-textarea layui-disabled" style="width:40%;height:120px;">{{ record.file_body }}</textarea>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">Response Body</label>
+    <div class="layui-input-block">
+      <textarea name="response_body" class="layui-textarea layui-disabled" style="width:40%;height:200px;">{{ record.response_body }}</textarea>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">Create Date</label>
+    <div class="layui-input-block">
+      {{ form.create_date(class="layui-input layui-disabled", style="width:40%;", value=record.create_date) }}
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">Create User</label>
+    <div class="layui-input-block">
+      {{ form.create_user_name(class="layui-input layui-disabled", style="width:40%;", value=record.create_user_name) }}
+    </div>
+  </div>
+
+
+</form>
+{% endblock %}
+
+{% block script %}
+
+<script type="text/javascript">
+    layui.use(['form', 'jquery', 'upload'], function () {
+        var form = layui.form;
+        var $ = layui.$;
+
+        $(document).ready(function(){
+
+            $('#new_again').on('click',function () {
+                window.location.href = "{{ url_for('main.hs_api_log_form', record_id=0) }}";
+                return false;
+            });
+
+            $('#upsert').on('click',function () {
+
+                var form_data = new FormData(document.getElementById("MainForm"));
+
+                $.ajax({
+                    url: "{{url_for('main.api_log_create_update')}}",
+                    type: "post",
+                    data: form_data,
+                    processData: false,
+                    contentType: false,
+                    success: result => {
+
+                        if(!validate_api_result(result)){return}; // 此处先预处理一下返回值, 需要报错的要报错
+
+                        if(form_data.get('record_id')){
+                            layui.layer.msg('更新成功!',{time: 1000});
+                        }else{
+                            layui.layer.msg('创建成功!',{time: 1000});
+                        };
+
+                        let data = result.data;
+                        $("#record_id").val(data.record_id);
+
+                    },
+                    fail: err => {
+                        layui.layer.msg('失败',{time: 1000});
+                    }
+                });
+                return false;
+
+            });
+        });
+
+    });
+
+
+
+</script>
+
+
+{% endblock %}
