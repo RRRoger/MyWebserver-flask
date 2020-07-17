@@ -6,7 +6,7 @@ from ..models import User, Post
 from flask import render_template, session
 from flask_login import login_user, logout_user, login_required
 from .hs_api_log_forms import HsApiLogSearch, HsApiLogForm
-from ..model_api_log import HesaiApiLog
+from ..model_api_log import HSApiLog
 from flask import Flask
 from .. import db
 from sqlalchemy import desc
@@ -32,7 +32,7 @@ def hs_api_log_tree():  # 这个函数里不再处理提交按钮，使用Ajax�
 @main.route('/api_log/form/<int:record_id>', methods=['GET', 'POST'])
 @login_required
 def hs_api_log_form(record_id):
-    this_obj = HesaiApiLog
+    this_obj = HSApiLog
 
     form = HsApiLogForm()
     record = this_obj.query.filter_by(id=record_id).first()
@@ -44,7 +44,7 @@ def hs_api_log_form(record_id):
 @login_required
 @try_except_log(add_log=True)
 def api_log_create_update():
-    this_obj = HesaiApiLog
+    this_obj = HSApiLog
 
     # 哪一个模型, 要删除的对象名
     data = request.form
@@ -75,7 +75,7 @@ def api_log_create_update():
 @try_except_log()
 def find_hs_api_log():
 
-    this_obj = HesaiApiLog
+    this_obj = HSApiLog
     query = this_obj.query.order_by(desc(this_obj.id))
 
     form_data = request.form

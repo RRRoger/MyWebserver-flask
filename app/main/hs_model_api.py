@@ -6,7 +6,7 @@ from ..models import User, Post
 from flask import render_template, session
 from flask_login import login_user, logout_user, login_required
 from .hs_model_forms import HsModelSearch, HsModelForm
-from ..models import HesaiModel
+from ..models import HSModel
 from flask import Flask
 from .. import db
 from sqlalchemy import desc
@@ -21,7 +21,7 @@ _logger = Flask(__name__).logger
 @main.route('/model/tree', methods=['GET', 'POST'])
 @login_required
 def hs_model_tree():  # 这个函数里不再处理提交按钮，使用Ajax局部刷新
-    this_obj = HesaiModel
+    this_obj = HSModel
     form = HsModelSearch()
     ctx = {
         'ALLOW_DELETE': current_app.config.get('ALLOW_DELETE')
@@ -33,7 +33,7 @@ def hs_model_tree():  # 这个函数里不再处理提交按钮，使用Ajax局�
 @main.route('/model/form/<int:record_id>', methods=['GET', 'POST'])
 @login_required
 def hs_model_form(record_id):
-    this_obj = HesaiModel
+    this_obj = HSModel
     form = HsModelForm()
     record = this_obj.query.filter_by(id=record_id).first()
     return render_template('hs_model_form.html', name=session.get('name'), form=form, record=record)
@@ -45,7 +45,7 @@ def hs_model_form(record_id):
 @try_except_log(add_log=True)
 def model_create_update():
 
-    this_obj = HesaiModel
+    this_obj = HSModel
     # print("request.data", request.data)
 
     # 哪一个模型, 要删除的对象名
@@ -72,7 +72,7 @@ def model_create_update():
 @login_required
 @try_except_log()
 def find_hs_model():
-    this_obj = HesaiModel
+    this_obj = HSModel
     query = this_obj.query.order_by(desc(this_obj.id))
 
     form_data = request.form
@@ -114,5 +114,5 @@ def find_hs_model():
 @try_except_log(add_log=True)
 def model_delete_new():
     # 哪一个模型, 要删除的对象名
-    delete_me(db, HesaiModel)
+    delete_me(db, HSModel)
     return response({})

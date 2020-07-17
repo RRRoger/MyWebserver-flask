@@ -5,7 +5,7 @@ from functools import wraps
 from sqlalchemy import exc
 from flask import jsonify
 from app.exceptions import UserError
-from app.model_api_log import HesaiApiLog
+from app.model_api_log import HSApiLog
 from flask import current_app
 from app import db
 
@@ -76,7 +76,7 @@ def try_except_log(add_log=False, null_body=False):
                         data_body = '[has been cleared]'
                         response_body = '[has been cleared]'
 
-                    log = HesaiApiLog(
+                    log = HSApiLog(
                         is_success=is_success, url=request.path, remote_addr=request.remote_addr,
                         form_body=form_body, file_body=file_body, data_body=data_body,
                         response_body=response_body, create_uid=current_user_id,

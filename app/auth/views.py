@@ -9,7 +9,7 @@ from .forms import LoginForm, RegistrationForm, ChangePasswordForm,\
     PasswordResetRequestForm, PasswordResetForm, ChangeEmailForm
 from flask import Flask
 _logger = Flask(__name__).logger
-from app.model_api_log import HesaiApiLog
+from app.model_api_log import HSApiLog
 from app.main.common import try_except_log, response, delete_me
 
 

@@ -16,7 +16,7 @@ from werkzeug.utils import secure_filename
 basedir = os.path.abspath(os.path.dirname(__file__))
 from app import create_app, db
 from app.models import *
-from app.model_api_log import HesaiApiLog
+from app.model_api_log import HSApiLog
 from tests.test_api import *
 from flask_script import Manager, Shell
 import logging

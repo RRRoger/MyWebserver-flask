@@ -3,7 +3,7 @@ from . import db
 from .models import User
 
 
-class HesaiApiLog(db.Model):
+class HSApiLog(db.Model):
     __tablename__ = 'hs_api_log'
     _description = "接口日志"
 

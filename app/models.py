@@ -20,7 +20,7 @@ class Permission:
     ADMIN = '16'
 
 
-class HesaiModel(db.Model):
+class HSModel(db.Model):
     __tablename__ = 'model'
 
     id = db.Column(db.Integer, primary_key=True)
