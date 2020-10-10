@@ -3,6 +3,8 @@
 > 网站模板
 > 基于 Python3 + Flask + Mysql + Layui
 >
+> Fork from https://github.com/lyric777/Book-Management-System
+>
 > 包含用户管理, 角色管理, 接口日志 等基础内容
 >
 > 支持基本的增删改查操作, 搜索, 分页, 异常捕获与权限管理等
