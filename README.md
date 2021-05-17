@@ -1,21 +1,28 @@
 # My WebServer
 
 > 网站模板
-> 基于 Python3 + Flask + Mysql + Layui
 >
 > Fork from https://github.com/lyric777/Book-Management-System
 >
-> 包含用户管理, 角色管理, 接口日志 等基础内容
->
-> 支持基本的增删改查操作, 搜索, 分页, 异常捕获与权限管理等
 
 
-# Technology stack
+## Technology stack
 
 - Python3.*
-- Flask
+- [Flask](https://dormousehole.readthedocs.io/en/latest/)
 - Mysql
-- Layui
+- [Layui](https://www.layui.com/)
+
+## Features
+
+- 增删改查操作
+- 用户管理
+- 角色管理
+- 权限管理
+
+- 接口日志
+- 搜索、分页
+- 异常捕获
 
 ## Init
 
@@ -46,7 +53,7 @@ flask init-tables
 
 ## Run
 
-### 1. 普通
+### 1. 普通启动方式
 
 ```bash
 python hello.py
@@ -54,7 +61,7 @@ python hello.py
 
 ### 2. with gunicorn
 
-- 安装`gunicorn`
+- 安装`gunicorn` & `gevent`
 
 ```bash
 pip install gunicorn
@@ -72,7 +79,7 @@ gunicorn -c gunicorn.conf.py  hello:app  --preload -b 0.0.0.0:5000
 gunicorn -c gunicorn.conf.py  hello:app  --preload -b 0.0.0.0:5000 --daemon
 ```
 
-#### 如何关闭进程?
+## 如何关闭进程?
 
 - `ps -ef|grep gunicorn`
 
@@ -89,9 +96,13 @@ roger    12449 12434  0 15:15 ? 00:00:01 ...... -b 0.0.0.0:5000 --daemon
 roger    12450 12434  0 15:15 ? 00:00:01 ...... -b 0.0.0.0:5000 --daemon
 ```
 
-- 删除父进程 如: `12434`
+- 删除父进程
 
-#### 查看日志
+```bash
+kill -9 12434
+```
+
+## 查看日志
 
 ```bash
 # 访问日志
