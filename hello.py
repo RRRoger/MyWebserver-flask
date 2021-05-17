@@ -33,7 +33,6 @@ from unittest import TestCase
 
 @app.cli.command()
 def init_tables():
-    
     Role.insert_roles()
     Amdin_Role = Role.query.filter_by(name='Administrator').first()
     user_admin = User(email='admin@163.com', username='admin', password='123', confirmed=True, role=Amdin_Role)
@@ -41,17 +40,32 @@ def init_tables():
     db.session.commit()
 
 
-def log_config():
+def log_config(debug=False):
+    """
+    :param debug: 如果不是debug模式, 则日志输出到文件
+    :return:
+    """
     # 日志配置
     home_path = os.path.expanduser('~')
     log_path = os_mkdir(home_path, "log")
-    log_file_path = '%s/secureWeb-Server.log' % log_path
+    log_file_path = '%s/my-flask-server.log' % log_path
     _format = '%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(lineno)s - %(message)s'
-    _handler = TimedRotatingFileHandler(log_file_path, when="D", interval=1, backupCount=15,
-                                        encoding="UTF-8", delay=False, utc=True)
+    _format2 = '%(asctime)s - %(levelname)s - %(message)s'
+    _handler = TimedRotatingFileHandler(log_file_path,
+                                        when="D",
+                                        interval=1,
+                                        backupCount=15,
+                                        encoding="UTF-8",
+                                        delay=False,
+                                        utc=True)
+
     _handler.setLevel(logging.DEBUG)
     logging_format = logging.Formatter(_format)
     _handler.setFormatter(logging_format)
+
+    if not debug:
+        logging.basicConfig(filename=log_file_path, level=logging.DEBUG, format=_format2)
+
     return _handler
 
 
