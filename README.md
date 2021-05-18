@@ -2,8 +2,7 @@
 
 > Flask网站模板
 >
-> Fork from https://github.com/lyric777/Book-Management-System
->
+> python + flask + LayUI + mysql
 
 
 ## Technology stack
