@@ -1,6 +1,6 @@
 # My WebServer
 
-> 网站模板
+> Flask网站模板
 >
 > Fork from https://github.com/lyric777/Book-Management-System
 >
@@ -26,19 +26,19 @@
 
 ## Init
 
-- 1. 添加环境变量
+- 添加环境变量
 
 ```bash
 export FLASK_APP=hello.py
 ```
 
-- 2. 创建数据库
+- 创建数据库
 
 ```bash
 create database test_db charset=utf8;
 ```
 
-- 3. 初始化数据库
+- 初始化数据库
 
 ```bash
 flask db init
@@ -46,10 +46,16 @@ flask db init
 flask db migrate
 
 flask db upgrade
+```
 
+- 初始化用户数据
+
+```bash
 # 初始化用户数据
 flask init-tables
 ```
+
+
 
 ## Run
 
