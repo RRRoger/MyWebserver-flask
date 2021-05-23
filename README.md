@@ -1,5 +1,11 @@
 # My WebServer
 
+[![](https://img.shields.io/badge/version-python3.x-green?style=flat-square)](https://www.python.org/downloads/)
+[![GitHub last commit](https://img.shields.io/github/stars/RRRoger/MyWebserver-flask.svg?style=flat-square)](https://github.com/RRRoger/MyWebserver-flask)
+[![GitHub issues](https://img.shields.io/github/issues/RRRoger/MyWebserver-flask.svg?style=flat-square)](https://github.com/RRRoger/MyWebserver-flask/issues)
+[![GitHub last commit](https://img.shields.io/github/last-commit/RRRoger/MyWebserver-flask.svg?style=flat-square)](https://github.com/RRRoger/MyWebserver-flask/commits/master)
+[![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/RRRoger/MyWebserver-flask/blob/master/LICENSE)
+
 > Flask网站模板
 >
 > python + flask + LayUI + mysql
