@@ -10,6 +10,9 @@
 >
 > python + flask + LayUI + mysql
 
+![](app/static/image/1629711797490.jpg)
+
+![](app/static/image/1629711723519.jpg)
 
 ## Technology stack
 
@@ -40,6 +43,10 @@ export FLASK_APP=hello.py
 - 创建数据库
 
 ```bash
+# 进入数据库
+mysql -uroot -p
+
+# 创建爱你数据库
 create database test_db charset=utf8;
 ```
 
@@ -48,8 +55,12 @@ create database test_db charset=utf8;
 ```bash
 flask db init
 
+# 第一次先删除`migrations`目录
+rm -rf migrations
+
 flask db migrate
 
+# 修改数据库结构
 flask db upgrade
 ```
 
