@@ -1,7 +1,5 @@
 # My WebServer
 
-> LayUI 已停止维护， 故此项目已停止 :(
-
 [![](https://img.shields.io/badge/version-python3.x-green?style=flat-square)](https://www.python.org/downloads/)
 [![GitHub last commit](https://img.shields.io/github/stars/RRRoger/MyWebserver-flask.svg?style=flat-square)](https://github.com/RRRoger/MyWebserver-flask)
 [![GitHub issues](https://img.shields.io/github/issues/RRRoger/MyWebserver-flask.svg?style=flat-square)](https://github.com/RRRoger/MyWebserver-flask/issues)
