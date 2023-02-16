@@ -46,7 +46,7 @@ six==1.10.0
 SQLAlchemy==1.3.17
 visitor==0.1.3
 webencodings==0.5.1
-Werkzeug==1.0.1
+Werkzeug==2.2.3
 WTForms==2.3.1
 
 # 2020-07-09 11:37:24 增加
